@@ -7,6 +7,7 @@ TagManager:
   - PlayerTag
   - EnemyTag
   - GameBoundTag
+  - BulletTag
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
+
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -29,7 +27,7 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("GameBoundTag"))
+        if (collision.gameObject.CompareTag("GameBoundTag") || collision.gameObject.CompareTag("EnemyTag"))
         {
             gameObject.SetActive(false);
         }

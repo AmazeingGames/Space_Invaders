@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,7 +11,7 @@ public class Player : MonoBehaviour
 
     Bullet bulletInstance;
 
-    new Rigidbody2D rigidbody2D;
+    Rigidbody2D rigidbody2D;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +42,6 @@ public class Player : MonoBehaviour
 
     void Shoot()
     {
-
         if (!bulletInstance.isActiveAndEnabled)
         {
             Debug.Log("Player Fired");
