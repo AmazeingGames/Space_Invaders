@@ -11,19 +11,25 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] Vector2 positionOffset;
 
-    [SerializeField] Vector2 enemySpeed;
+    [SerializeField] Vector2 baseEnemySpeed;
 
     [SerializeField] int enemyRows;
     [SerializeField] int enemyCollumns;
 
-    List<Enemy> enemyList = new();
+    [SerializeField] float baseTickLength;
 
-    [HideInInspector] public bool collidedWithGameBounds;
-    [HideInInspector] public bool updatedSpeed;
+    List<Enemy> enemyList = new();
+    float timer;
+
+    [HideInInspector] public bool hasCollidedWithGameBounds;
+    [HideInInspector] public bool hasUpdatedSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (baseEnemySpeed.y > 0)
+            baseEnemySpeed *= -1;
+
         SpawnEnemies();
 
         enemyHolder = GameObject.Find("EnemyHolder").GetComponent<Transform>();
@@ -32,12 +38,22 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveEnemyHolder(enemySpeed.x, 0);
-
-        if (collidedWithGameBounds)
+        if (hasCollidedWithGameBounds)
         {
             UpdateEnemySpeed();
         }
+
+        if (timer >= baseTickLength)
+        {
+            MoveEnemies();
+            timer = 0;
+        }
+        timer += Time.deltaTime;
+    }
+
+    void MoveEnemies()
+    {
+        MoveEnemyHolder(baseEnemySpeed.x, 0);
     }
 
     void MoveEnemyHolder(float horizontalMovement, float verticalMovement)
@@ -66,14 +82,14 @@ public class EnemyManager : MonoBehaviour
 
     public void UpdateEnemySpeed()
     {
-        Debug.Log($"CollidedWithGameBounds : {collidedWithGameBounds}");
-
-        if (collidedWithGameBounds == true && updatedSpeed == false)
+        if (hasCollidedWithGameBounds == true && hasUpdatedSpeed == false)
         {
             Debug.Log("Collided & Updated with Game Bounds");
-            enemySpeed.x *= -1;
 
-            MoveEnemyHolder(0, enemySpeed.y);
+            baseEnemySpeed.x *= -1;
+            MoveEnemyHolder(0, baseEnemySpeed.y);
+
+            hasUpdatedSpeed = true;
         }
     }
 }
